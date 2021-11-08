@@ -5,8 +5,7 @@ module.exports = {
     name: "poll",
     description: "Asks for game modifiers to choose, similar to the mode and vt command. Separate arguments with |",
     usage: `${process.env.PREFIX}poll <options>`,
-    gameOnly: true,
-    narratorOnly: true,
+    hostOnly: true,
     run: async (message, args, client) => {
         let items = []
         args = args.join(" ").split("|")

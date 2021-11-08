@@ -6,8 +6,7 @@ module.exports = {
     name: "bye",
     description: "Clean the game server.",
     usage: `${process.env.PREFIX}bye`,
-    gameOnly: true,
-    narratorOnly: true,
+    hostOnly: true,
     run: async (message, args, client) => {
         await kickPlayers(message)
         await kickSpectators(message)

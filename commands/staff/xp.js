@@ -4,7 +4,7 @@ module.exports = {
     name: "xp",
     description: "Change the xp of a user. You can `<add | remove | set>` the amount.",
     usage: `${process.env.PREFIX}xp (add | remove | set) <user> <amount>`,
-    narratorOnly: true,
+    hostOnly: true,
     run: async (message, args, client) => {
         if (!args.length == 3) return message.channel.send(message.l10n("xpFormatInvalid"))
         let run = args[0]

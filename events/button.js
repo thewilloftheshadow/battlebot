@@ -11,8 +11,8 @@ module.exports = (client) => {
             //if (db.get("started") == "yes") return interaction.reply(`The game has already started!`, { ephemeral: true })
             let guy = interaction.member
             if (guy.roles.cache.has(ids.spectator)) guy.roles.remove(ids.spectator) //spec
-            if (guy.roles.cache.has(ids.host)) guy.roles.remove(ids.host) 
-            if (guy.roles.cache.has(ids.hostteam)) guy.roles.remove(ids.mini) 
+            if (guy.roles.cache.has(ids.host)) guy.roles.remove(ids.host)
+            if (guy.roles.cache.has(ids.hostteam)) guy.roles.remove(ids.mini)
             let role = interaction.guild.roles.cache.get(ids.alive)
             await guy.roles
                 .add(ids.alive)
@@ -37,18 +37,10 @@ module.exports = (client) => {
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} is now spectating the game!`)
         }
         if (interaction.customId == "ashish-ignarr") {
-            let guild = client.guilds.cache.get(ids.server.sim)
-            let member = await guild.members.fetch({ user: interaction.member.id, force: true }).catch((e) => e)
-            if (!member.id) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
-            if (!member.roles.cache.has(ids.minisim) && !member.roles.cache.has(ids.narratorsim) && !member.roles.cache.has(ids.supervisor)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
-            if (member.roles.cache.has(ids.minisim)) {
-                if (interaction.member.roles.cache.has(ids.mini)) return interaction.reply({ content: "You already have this role!", ephemeral: true })
-                if (db.get(`hoster`) != interaction.member.id && db.get(`game`)) return interaction.reply({ content: "Unfortunately, you aren't the host, and because you're a narrator in training, you aren't allowed to narrate spectate!", ephemeral: true })
-                interaction.member.roles.add(ids.mini)
-            }
-            if (member.roles.cache.has(ids.narratorsim)) {
-                if (interaction.member.roles.cache.has(ids.narrator)) return interaction.reply({ content: "You already have this role!", ephemeral: true })
-                interaction.member.roles.add(ids.narrator)
+            let member = await interaction.guild.members.fetch({ user: interaction.member.id, force: true }).catch((e) => e)
+            if (!member?.roles.cache.has(ids.hostteam)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
+            if (member.roles.cache.has(ids.hostteam)) {
+                interaction.member.roles.add(ids.host)
             }
             interaction.deferUpdate()
         }
@@ -76,7 +68,7 @@ module.exports = (client) => {
                     db.set("nextRequest", Date.now() + ms("30m"))
                     break
                 case "stats":
-                    interaction.reply({ content: `The last winner of the game was ${db.get("winner")}. More accurate/useful stats are coming soon!`, ephemeral: true })
+                    interaction.reply({ content: `The last gamemode was ${db.get("gamemode")}.`, ephemeral: true })
 
                 default:
                     break

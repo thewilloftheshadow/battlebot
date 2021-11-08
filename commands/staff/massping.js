@@ -3,7 +3,7 @@ module.exports = {
     description: "Massping an innocent user so they wake up.",
     usage: `${process.env.PREFIX}massping <nickname>`,
     aliases: ["sjjsjs", "wake"],
-    narratorOnly: true,
+    hostOnly: true,
     run: async (message, args) => {
         for (let i = 0; i < 10; i++) {
             let a = message.guild.members.cache.find((m) => m.nickname === args[0])

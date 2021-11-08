@@ -6,7 +6,7 @@ module.exports = {
     description: "Add xp to a user after they finished a quest.",
     usage: `${process.env.PREFIX}quest <user> <xp> <quest...>`,
     aliases: ["quests"],
-    narratorOnly: true,
+    hostOnly: true,
     run: async (message, args, client) => {
         if (args.length < 3) return message.channel.send(message.l10n("questFormatInvalid"))
 

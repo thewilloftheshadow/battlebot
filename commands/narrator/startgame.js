@@ -7,8 +7,7 @@ module.exports = {
     name: "startgame",
     description: "Start the game.",
     usage: `${process.env.PREFIX}startgame`,
-    gameOnly: true,
-    narratorOnly: true,
+    hostOnly: true,
     run: async (message, args, client) => {
         let mid = db.get("entermsg")
         if (mid) {

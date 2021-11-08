@@ -6,7 +6,6 @@ module.exports = {
     name: "reset",
     description: "Reset the database.",
     usage: `${process.env.PREFIX}reset`,
-    gameOnly: true,
     run: async (message, args, client) => {
         console.log("hi")
         if (message.member.roles.cache.has(ids.narrator) || message.member.roles.cache.has(ids.mini)) {

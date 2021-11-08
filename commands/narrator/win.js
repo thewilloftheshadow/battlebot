@@ -7,8 +7,7 @@ module.exports = {
     name: "win",
     description: "Announce the winning team and its players.",
     usage: `${process.env.PREFIX}win <team> <player...>`,
-    gameOnly: true,
-    narratorOnly: true,
+    hostOnly: true,
     run: async (message, args, client) => {
         let winTeam = args[0]?.toLowerCase()
         if (args.length < 2 || !xp.teamMultipliers[winTeam]) return message.channel.send("Please specify the winning team and its players! Valid teams are the following:\n" + Object.keys(xp.teamMultipliers).join(", "))

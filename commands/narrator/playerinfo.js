@@ -7,8 +7,7 @@ module.exports = {
     name: "playerinfo",
     description: "Get the playerinfo.",
     usage: `${process.env.PREFIX}playerinfo`,
-    gameOnly: true,
-    narratorOnly: true,
+    hostOnly: true,
     run: async (message, args, client) => {
         let content = ""
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive").members.size

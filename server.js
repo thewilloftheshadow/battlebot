@@ -83,10 +83,10 @@ client.on("ready", async () => {
     let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
     client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "BattleBot!")
     console.log("Connected!")
-    client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
+    //client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
     client.channels.cache.get("907359846381281310").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
     //Invite Tracker
-    client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
+    //client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
 })
 
 let maint = db.get("maintenance")

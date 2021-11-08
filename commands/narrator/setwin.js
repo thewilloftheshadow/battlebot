@@ -3,8 +3,7 @@ module.exports = {
     name: "setwin",
     description: "End the game and announce the winner.",
     usage: `${process.env.PREFIX}setwin <winner...>`,
-    gameOnly: true,
-    narratorOnly: true,
+    hostOnly: true,
     run: async (message, args, client) => {
         db.set(`winner`, args.join(" "))
         message.channel.send("Done!")

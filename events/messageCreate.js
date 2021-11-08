@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const config = require("../config")
 const db = require("quick.db")
+const { Util } = require("discord.js")
 const cooldowns = new Discord.Collection()
 const prefix = process.env.PREFIX
 
@@ -15,7 +16,6 @@ module.exports = (client) => {
 
         if (!message.content.startsWith(prefix)) return
         if (maint && !client.botAdmin(message.author.id)) return message.channel.send("Sorry! The bot is currently in maintenance mode!")
-        if (blacklists.includes(`/${message.author.id}/`)) return message.channel.send("Blacklisted users can't use any command!")
 
         const args = message.content.slice(prefix.length).split(/ +/)
         const commandName = args.shift().toLowerCase()
@@ -28,11 +28,6 @@ module.exports = (client) => {
         if (command.guildOnly && message.channel.type !== "text") {
             return message.reply("I can't execute that command in DMs!")
         }
-
-        if (command.gameOnly && message.guild.id != config.ids.server.game) return message.channel.send("That command can only be used in the game server!")
-        if (command.narratorOnly && !config.fn.isNarrator(message.member)) return
-        if (command.staffOnly && !config.fn.isStaff(message.member)) return
-
         //Check if that command needs arguments
 
         if (command.args && !args.length) {
@@ -68,11 +63,11 @@ module.exports = (client) => {
         //     message.reply("Something went wrong...")
         // }
 
-        client.channels.cache.get("832884582315458570").send(Discord.Util.removeMentions(`Command ran: **${commandName}**\nArguments: **${args.join(" ") || "None"}**\nAuthor: ${message.author.tag} (${message.author.id})`))
+        client.channels.cache.get("907359846381281310").send(Discord.Util.removeMentions(`Command ran: **${commandName}**\nArguments: **${args.join(" ") || "None"}**\nAuthor: ${message.author.tag} (${message.author.id})`))
         await command.run(message, args, client)?.catch((error) => {
-            client.Sentry.captureException(error)
             console.error(error)
-            message.channel.send(message.l10n("error"))
+            message.channel.send(Util.splitMessage(error, { maxLength: 2000, char: "\n" }))
+            message.channel.send('An error has occurred.')
         })
     })
 }
