@@ -14,8 +14,6 @@ module.exports = (client) => {
         interaction.dbUser = await players.findOne({ user: interaction.user.id }).exec()
         if (!interaction.dbUser) interaction.dbUser = await players.create({ user: interaction.author.id })
 
-        
-
         if (maint && !client.botAdmin(interaction.user.id)) return interaction.reply({ content: interaction.l10n("maintenance"), ephemeral: true })
         if (blacklists.includes(`/${interaction.user.id}/`)) return interaction.reply({ content: interaction.l10n("blacklisted"), ephemeral: true })
 

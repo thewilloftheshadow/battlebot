@@ -2,7 +2,6 @@ const Discord = require("discord.js")
 const db = require("quick.db")
 const { fn, xp, roles, soloKillers } = require("../../config")
 
-
 module.exports = {
     name: "win",
     description: "Announce the winning team and its players.",
@@ -43,7 +42,7 @@ module.exports = {
             if (winners.includes(x)) {
                 xpBase = winXP
                 data.winStreak += 1
-                if(data.stats[winTeam]) data.stats[winTeam].win += 1
+                if (data.stats[winTeam]) data.stats[winTeam].win += 1
             } else if (losers.includes(x)) {
                 xpBase = loseXP
                 client.channels.cache.get("606123726966358037").send(`Add one loss to ${x} for the ${db.get(`role_${x}`)} role in game ${db.get("game")}.`)

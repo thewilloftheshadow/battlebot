@@ -9,7 +9,7 @@ module.exports = {
     hostOnly: true,
     run: async (message, args, client) => {
         if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
-        let m = await message.guild.channels.cache.find(x => x.name == "enter-game").send({ content: `@everyone, we are now starting game ${args.join(" ")}. Our host will be <@${message.author.id}>! Use the Join Game button above to join!`})
+        let m = await message.guild.channels.cache.find((x) => x.name == "enter-game").send({ content: `@everyone, we are now starting game ${args.join(" ")}. Our host will be <@${message.author.id}>! Use the Join Game button above to join!` })
         db.set(`game`, m.id)
         db.set(`hoster`, message.author.id)
         db.set(`gamePhase`, -5)

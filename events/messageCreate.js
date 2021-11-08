@@ -67,7 +67,7 @@ module.exports = (client) => {
         await command.run(message, args, client)?.catch((error) => {
             console.error(error)
             message.channel.send(Util.splitMessage(error, { maxLength: 2000, char: "\n" }))
-            message.channel.send('An error has occurred.')
+            message.channel.send("An error has occurred.")
         })
     })
 }
