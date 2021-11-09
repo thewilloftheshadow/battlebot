@@ -2,6 +2,7 @@
 
 const Discord = require("discord.js")
 const db = require("quick.db")
+const { ids } = require("../../config")
 
 module.exports = {
     name: "playerinfo",
@@ -10,8 +11,8 @@ module.exports = {
     hostOnly: true,
     run: async (message, args, client) => {
         let content = ""
-        let players = message.guild.roles.cache.find((r) => r.name === "Players").members
-        players.forEach((p) => {
+        let players = message.guild.roles.cache.get(ids.player)?.members
+        players?.forEach((p) => {
             content += `${p.displayName} (${p.user.tag})\n`
         })
         let embed = new Discord.MessageEmbed().setTitle("Playerinfo").setDescription(content).setColor("#648620")

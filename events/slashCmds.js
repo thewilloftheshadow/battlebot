@@ -8,17 +8,6 @@ module.exports = (client) => {
         if (!interaction.isCommand()) return
         let commandFile = client.slashCommands.get(interaction.commandName)
 
-        let maint = db.get("maintenance")
-        let blacklists = db.get(`blacklistss`) || []
-
-        interaction.dbUser = await players.findOne({ user: interaction.user.id }).exec()
-        if (!interaction.dbUser) interaction.dbUser = await players.create({ user: interaction.author.id })
-
-        if (maint && !client.botAdmin(interaction.user.id)) return interaction.reply({ content: interaction.l10n("maintenance"), ephemeral: true })
-        if (blacklists.includes(`/${interaction.user.id}/`)) return interaction.reply({ content: interaction.l10n("blacklisted"), ephemeral: true })
-
-        if ((commandFile.hostOnly && !config.fn.isNarrator(interaction.member)) || (commandFile.staffOnly && !config.fn.isStaff(interaction.member))) return interaction.reply({ content: "You are missing permissions to do that!", ephemeral: true })
-
         if (!cooldowns.has(commandFile.name)) {
             cooldowns.set(commandFile.name, new Collection())
         }
@@ -43,10 +32,10 @@ module.exports = (client) => {
             })
         }
         if (!args[0]) args = ["None"]
-        client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\nUser: ${interaction.user.tag} (${interaction.user.id})`) })
+        client.channels.cache.get("907359846381281310").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\nUser: ${interaction.user.tag} (${interaction.user.id})`) })
         await commandFile.run(interaction, client).catch((error) => {
             console.error(error)
-            interaction.reply({ content: interaction.l10n("error"), ephemeral: true })
+            interaction.reply("An error has occured")
         })
     })
 }
