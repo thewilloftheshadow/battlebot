@@ -11,6 +11,5 @@ module.exports = {
         })
         dayChat.send(`<@&${ids.player}>`)
         message.channel.send("Done")
-
     },
 }

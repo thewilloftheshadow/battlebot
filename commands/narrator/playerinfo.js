@@ -11,7 +11,7 @@ module.exports = {
     run: async (message, args, client) => {
         let content = ""
         let players = message.guild.roles.cache.find((r) => r.name === "Players").members
-        players.forEach((p) => { 
+        players.forEach((p) => {
             content += `${p.displayName} (${p.user.tag})\n`
         })
         let embed = new Discord.MessageEmbed().setTitle("Playerinfo").setDescription(content).setColor("#648620")

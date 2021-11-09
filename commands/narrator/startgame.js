@@ -58,7 +58,6 @@ module.exports = {
                 VIEW_CHANNEL: true,
             })
 
-        
         message.channel.send("The game has started! Use +unlock and +lock to control the game chat.")
         await client.channels.cache.find((c) => c.id === "606123818305585167").send("Game is starting. You can no longer join. Feel free to spectate!")
         let gamemode = db.get(`gamemode`)
