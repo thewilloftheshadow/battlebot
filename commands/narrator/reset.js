@@ -60,7 +60,7 @@ module.exports = {
 
             message.guild.channels.cache
                 .find((x) => x.name == "day-chat")
-                .permissionOverwrites.edit(ids.alive, {
+                .permissionOverwrites.edit(ids.player, {
                     SEND_MESSAGES: false,
                     READ_MESSAGE_HISTORY: false,
                     VIEW_CHANNEL: false,
@@ -68,7 +68,7 @@ module.exports = {
 
             message.guild.channels.cache
                 .find((c) => c.name === "vote-chat")
-                .permissionOverwrites.edit(ids.alive, {
+                .permissionOverwrites.edit(ids.player, {
                     SEND_MESSAGES: false,
                     READ_MESSAGE_HISTORY: true,
                     VIEW_CHANNEL: true,
@@ -76,7 +76,7 @@ module.exports = {
 
             message.guild.channels.cache
                 .find((x) => x.name == "game-lobby")
-                .permissionOverwrites.edit(ids.alive, {
+                .permissionOverwrites.edit(ids.player, {
                     SEND_MESSAGES: true,
                     READ_MESSAGE_HISTORY: true,
                     VIEW_CHANNEL: true,

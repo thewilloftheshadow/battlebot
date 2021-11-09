@@ -1,2 +1,3 @@
 const ids = require("./ids")
-module.exports = { ids }
+const gameModes = ["Pokemon", "Chess"]
+module.exports = { ids, gameModes }

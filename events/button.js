@@ -8,14 +8,12 @@ module.exports = (client) => {
         if (!interaction.isMessageComponent() && interaction.componentType !== "BUTTON") return
         console.log(interaction.customId)
         if (interaction.customId == "igjoin") {
-            //if (db.get("started") == "yes") return interaction.reply(`The game has already started!`, { ephemeral: true })
             let guy = interaction.member
-            if (guy.roles.cache.has(ids.spectator)) guy.roles.remove(ids.spectator) //spec
+            if (guy.roles.cache.has(ids.spectator)) guy.roles.remove(ids.spectator) 
             if (guy.roles.cache.has(ids.host)) guy.roles.remove(ids.host)
-            if (guy.roles.cache.has(ids.hostteam)) guy.roles.remove(ids.mini)
-            let role = interaction.guild.roles.cache.get(ids.alive)
+            let role = interaction.guild.roles.cache.get(ids.player)
             await guy.roles
-                .add(ids.alive)
+                .add(ids.player)
                 .then((g) => g.setNickname(role.members.size.toString()).catch((e) => interaction.reply(`Error: ${e.message}`)))
                 .catch((e) => interaction.reply(`Error: ${e.message}`))
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} joined the game!`)
@@ -23,33 +21,19 @@ module.exports = (client) => {
         }
         if (interaction.customId == "igspec") {
             let guy = interaction.member
-            if (guy.roles.cache.has(ids.dead)) return interaction.reply({ content: `Sorry, you're dead! You can't spectate after you've already played!`, ephemeral: true })
-            if (!guy.roles.cache.has(ids.immunity)) {
-                guy.setNickname("lazy spectatorz")
-            } else {
-                guy.setNickname(guy.user.username)
-            }
+            guy.setNickname("lazy spectatorz")
             guy.roles.add(ids.spectator)
-            if (guy.roles.cache.has(ids.alive)) guy.roles.remove(ids.alive) //alive
-            if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
-            if (guy.roles.cache.has(ids.mini)) guy.roles.remove(ids.mini) //mininarr
+            if (guy.roles.cache.has(ids.player)) guy.roles.remove(ids.player) 
+            if (guy.roles.cache.has(ids.host)) guy.roles.remove(ids.host) 
             interaction.deferUpdate()
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} is now spectating the game!`)
         }
-        if (interaction.customId == "ashish-ignarr") {
-            let member = await interaction.guild.members.fetch({ user: interaction.member.id, force: true }).catch((e) => e)
-            if (!member?.roles.cache.has(ids.hostteam)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
-            if (member.roles.cache.has(ids.hostteam)) {
+        if (interaction.customId == "ighost") {
+            if (!interaction.member.roles.cache.has(ids.hostteam)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
+            if (interaction.member.roles.cache.has(ids.hostteam)) {
                 interaction.member.roles.add(ids.host)
             }
             interaction.deferUpdate()
-        }
-
-        if (interaction.customId.startsWith("shoppage")) {
-            let page = parseInt(interaction.customId.split("-")[1])
-            interaction.update({
-                embeds: [shop.embeds[page - 1]],
-            })
         }
 
         if (interaction.customId.startsWith("gp")) {
@@ -64,7 +48,7 @@ module.exports = (client) => {
                     canNotHost.customId += interaction.member.id
                     const row = new MessageActionRow().addComponents(canHost, canNotHost)
                     client.channels.cache.get("907369493242720328").send({ content: `${interaction.member} is requesting a game! ||@here||\n\nThe below buttons will send a DM to the requesting user about your choice.`, components: [row] })
-                    interaction.reply({ content: "Your request has been sent to the narrators!", ephemeral: true })
+                    interaction.reply({ content: "Your request has been sent to the host team!", ephemeral: true })
                     db.set("nextRequest", Date.now() + ms("30m"))
                     break
                 case "stats":

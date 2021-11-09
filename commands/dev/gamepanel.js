@@ -10,7 +10,7 @@ module.exports = {
         let request = new MessageButton().setStyle("DANGER").setLabel("Request a Game").setCustomId("gp-request")
         let join = new MessageButton().setStyle("SUCCESS").setLabel("Join Game").setCustomId("igjoin")
         let spectate = new MessageButton().setStyle("PRIMARY").setLabel("Spectate").setCustomId("igspec")
-        let host = new MessageButton().setStyle("SECONDARY").setLabel("Host").setCustomId("ashish-ignarr")
+        let host = new MessageButton().setStyle("SECONDARY").setLabel("Host").setCustomId("ighost")
         let row = new MessageActionRow().addComponents(request, join, spectate, host)
         let m = await message.channel.send({
             embeds: [

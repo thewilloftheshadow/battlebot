@@ -21,19 +21,7 @@ module.exports = {
                 let cha = message.guild.channels.cache.find((channel) => channel.id === ch[b])
                 if (cha.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     let ro = cha.name.replace("priv-", "")
-                    let rol = ro.toLowerCase()
-                    let role = rol.replace("-", "_")
-                    let autoRole
-                    if (ro.includes("-")) {
-                        autoRole = ro.replace(/(\w+)-(\w+)/g, (_, m1, m2) => `${m1[0].toUpperCase()}${m1.slice(1).toLowerCase()} ${m2[0].toUpperCase()}${m2.slice(1).toLowerCase()}`)
-                    } else {
-                        autoRole = `${ro[0].toUpperCase()}${ro.slice(1).toLowerCase()}`
-                    }
-
-                    db.set(`role_${guy.id}`, autoRole)
-                    let emoji = client.emojis.cache.find((e) => e.name === role)
-                    if (!emoji) emoji = role
-                    content += `${emoji} ${guy.nickname}. ${guy.user.tag}\n`
+                    content += `${guy.nickname}. ${guy.user.tag}\n`
                 }
             }
         }
