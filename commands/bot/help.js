@@ -16,7 +16,7 @@ module.exports = {
         // If args[0] is a command, send a specific command card.
         if (cmd_target) {
             embed
-                .setTitle(fn.capitalizeFirstLetter(cmd_target.name))
+                .setTitle(capitalizeFirstLetter(cmd_target.name))
                 .setDescription(
                     `Prefix: \`${process.env.PREFIX}\`
 Use ${process.env.PREFIX}help to see all commands.
@@ -31,7 +31,7 @@ Use ${process.env.PREFIX}help to see all commands.
             }
         } else if (["args", "arg", "arguments", "argument"].includes(args[0])) {
             embed
-                .setTitle(message.l10n("helpHeader"))
+                .setTitle("BattleBot Help")
                 .setDescription(
                     `
 **Argument Requirement:**
@@ -65,13 +65,12 @@ Note: Some arguments were left out as they are obvious to understand like \`nick
         }
         // if args[0] doesn't exist or it is not a command
         else {
-            embed
-                .setTitle(message.l10n("helpHeader"))
-                .setDescription(message.l10n("helpMain", { gamewarning: "<#606123818305585167>", howtoplay: "<#859001588617445436>", rankedwarn: "<#860552178095882240>", supportandquestions: "<#606123788257591297>", clientUser: `<@${client.user.id}>`, prefix: process.env.PREFIX }))
-                .addField(message.l10n("economy"), message.l10n("helpEconomy"))
-                .addField(message.l10n("fun"), message.l10n("helpFun"))
-                .addField(message.l10n("bot"), message.l10n("helpBot"))
+            embed.setTitle("Command not found")
         }
         message.channel.send({ embeds: [embed] })
     },
+}
+
+const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1)
 }
