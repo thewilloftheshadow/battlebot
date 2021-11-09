@@ -12,10 +12,9 @@ module.exports = (client) => {
             if (action == "Spectate") {
                 if (!interaction.member.roles.cache.has(ids.mini) && !interaction.member.roles.cache.has(ids.narrator)) return interaction.reply({ content: "You aren't a Host!", ephemeral: true })
                 user.roles.add(ids.spectator)
-                if (user.roles.cache.has(ids.player)) user.roles.remove(ids.player) 
+                if (user.roles.cache.has(ids.player)) user.roles.remove(ids.player)
                 interaction.reply({ content: "Done!", ephemeral: true })
                 gamelobby.send(`${user.user.tag} is now spectating the game!`)
-                
             }
         }
     })

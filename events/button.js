@@ -9,7 +9,7 @@ module.exports = (client) => {
         console.log(interaction.customId)
         if (interaction.customId == "igjoin") {
             let guy = interaction.member
-            if (guy.roles.cache.has(ids.spectator)) guy.roles.remove(ids.spectator) 
+            if (guy.roles.cache.has(ids.spectator)) guy.roles.remove(ids.spectator)
             if (guy.roles.cache.has(ids.host)) guy.roles.remove(ids.host)
             let role = interaction.guild.roles.cache.get(ids.player)
             await guy.roles
@@ -23,8 +23,8 @@ module.exports = (client) => {
             let guy = interaction.member
             guy.setNickname("lazy spectatorz")
             guy.roles.add(ids.spectator)
-            if (guy.roles.cache.has(ids.player)) guy.roles.remove(ids.player) 
-            if (guy.roles.cache.has(ids.host)) guy.roles.remove(ids.host) 
+            if (guy.roles.cache.has(ids.player)) guy.roles.remove(ids.player)
+            if (guy.roles.cache.has(ids.host)) guy.roles.remove(ids.host)
             interaction.deferUpdate()
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} is now spectating the game!`)
         }
