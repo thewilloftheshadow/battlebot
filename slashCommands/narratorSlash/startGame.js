@@ -39,7 +39,6 @@ module.exports = {
         let player = interaction.guild.roles.cache.find((r) => r.name === "Player")
         let host = interaction.guild.roles.cache.find((r) => r.name === "Host")
         let channelNames = [],
-            roleOptions = [],
             allChannels = []
 
         await interaction.deferReply()
@@ -59,41 +58,54 @@ module.exports = {
             return interaction.editReply("The number of channels does not match the number of players!")
         }
 
+        // if gamemode is chess and there are more than 5 players, respond with error
+        if (gamemode == "chess" && player.members.size > 5) {
+            return interaction.editReply("There are too many players for the chess gamemode!")
+        }
+
+        // if gamemode is pokemon and there are more than 6 players, respond with error
+        if (gamemode == "pokemon" && player.members.size % 2 != 0) {
+            return interaction.editReply("There must be an even number of players for the pokemon gamemode!")
+        }
+
         if (channelNames.length < 1) channelNames = player.members.map((m) => m.user.username.toLowerCase())
 
         console.log(channelNames)
+        let x = 0
 
         // create channel for each player
-        for (let i = 0; i < player.members.size; i++) {
-            let name = channelNames[i]
-            let channel = await interaction.guild.channels.create(name, {
-                type: "text",
-                parent: "907682188554821682",
-                permissionOverwrites: [
-                    {
-                        id: host.id,
-                        allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
-                    },
-                    {
-                        id: player.id,
-                        allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
-                    },
-                    {
-                        id: interaction.guild.id,
-                        deny: ["VIEW_CHANNEL", "SEND_MESSAGES"],
-                    },
-                ],
-            })
-            allChannels.push(channel)
-            usedChannels.push(channel.id)
-            db.set(`usedChannels`, usedChannels)
-        }
+        player.members.forEach((m) => {
+            let name = channelNames[x]
+            interaction.guild.channels
+                .create(name, {
+                    type: "text",
+                    parent: "907682188554821682",
+                    permissionOverwrites: [
+                        {
+                            id: host.id,
+                            allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
+                        },
+                        {
+                            id: m.id,
+                            allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
+                        },
+                        {
+                            id: interaction.guild.id,
+                            deny: ["VIEW_CHANNEL", "SEND_MESSAGES"],
+                        },
+                    ],
+                })
+                .then((channel) => {
+                    channel.send(`<@${m.id}>, welcome to your private channel. Stand by for further instructions from the host.`)
+                })
+            x++
+        })
 
         messages[gamemode].forEach((m) => {
-            let dcSent = await gameChat.send(m)
-            dcSent.pin()
+            gameChat.send(m).then((x) => x.pin())
             console.log(m)
         })
+
         gameChat.permissionOverwrites.edit(ids.player, {
             SEND_MESSAGES: false,
             VIEW_CHANNEL: true,
@@ -104,27 +116,22 @@ module.exports = {
         client.commands.get("disable").run(interaction, ["join"], client)
 
         // changing perms for alive in game-lobby
-        gameLobby.send("Game starting in 5 ...")
+        await gameLobby.send("Game starting in 5 ...")
+        await sleep(1000)
+        await gameLobby.send("Game starting in 4 ...")
+        await sleep(1000)
+        await gameLobby.send("Game starting in 3 ...")
+        await sleep(1000)
+        await gameLobby.send("Game starting in 2 ...")
+        await sleep(1000)
+        await gameLobby.send("Game starting in 1 ...")
+        await sleep(1000)
 
-        setTimeout(async () => {
-            gameLobby.send("4")
-        }, 1000)
-        setTimeout(async () => {
-            gameLobby.send("3")
-        }, 2000)
-        setTimeout(async () => {
-            gameLobby.send("2")
-        }, 3000)
-        setTimeout(async () => {
-            gameLobby.send("1")
-        }, 4000)
-        setTimeout(async () => {
-            gameLobby.permissionOverwrites.edit(ids.player, {
-                SEND_MESSAGES: false,
-                READ_MESSAGE_HISTORY: false,
-                VIEW_CHANNEL: false,
-            })
-        }, 5000)
+        gameLobby.permissionOverwrites.edit(ids.player, {
+            SEND_MESSAGES: false,
+            READ_MESSAGE_HISTORY: false,
+            VIEW_CHANNEL: false,
+        })
 
         gameChat.permissionOverwrites.edit(ids.player, {
             SEND_MESSAGES: false,
@@ -134,7 +141,10 @@ module.exports = {
 
         interaction.editReply("The game has started! Use +unlock and +lock to control the game chat.")
         await enterGame.send("Game is starting. You can no longer join. Feel free to spectate!")
-        interaction.guild.channels.cache.find((x) => x.name == "enter-game").send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
         db.set("started", "yes")
     },
+}
+
+const sleep = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms))
 }

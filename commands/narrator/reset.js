@@ -38,7 +38,12 @@ module.exports = {
                     VIEW_CHANNEL: true,
                 })
 
-            message.guild.members.cache.filter((x) => x.roles.cache.has(ids.player)).forEach((x) => x.roles.remove(ids.player))
+            message.guild.members.cache
+                .filter((x) => x.roles.cache.has(ids.player))
+                .forEach((x) => {
+                    x.roles.remove(ids.player)
+                    x.setNickname(x.user.username)
+                })
             message.guild.members.cache.filter((x) => x.roles.cache.has(ids.spectator)).forEach((x) => x.roles.remove(ids.spectator))
 
             const temproles = message.guild.channels.cache.find((x) => x.name == "private channels")
